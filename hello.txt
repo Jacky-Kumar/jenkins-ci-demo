@@ -1,1 +1,2 @@
 Hello from Jenkins CLI
+Auto build test
