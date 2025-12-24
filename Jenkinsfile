@@ -1,24 +1,28 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'ubuntu:22.04'
+            args '-u root'
+        }
+    }
 
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
-                echo 'Code checked out from GitHub'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'echo Building project'
-                bat 'dir'
+                sh 'echo "Running inside Docker container"'
+                sh 'ls -la'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'type hello.txt'
+                sh 'cat hello.txt'
             }
         }
     }
