@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'ubuntu:22.04'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -13,16 +8,27 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build inside Docker') {
             steps {
-                sh 'echo "Running inside Docker container"'
-                sh 'ls -la'
+                bat '''
+                docker run --rm ^
+                  -v "%cd%":/workspace ^
+                  -w /workspace ^
+                  ubuntu:22.04 ^
+                  bash -c "echo Running inside Docker && ls -la"
+                '''
             }
         }
 
-        stage('Test') {
+        stage('Test inside Docker') {
             steps {
-                sh 'cat hello.txt'
+                bat '''
+                docker run --rm ^
+                  -v "%cd%":/workspace ^
+                  -w /workspace ^
+                  ubuntu:22.04 ^
+                  bash -c "cat hello.txt"
+                '''
             }
         }
     }
