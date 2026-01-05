@@ -3,3 +3,5 @@ Auto build test
 test2
 Hello I am back again
 merry christmas!
+Hello Git, Happy new year!
+
